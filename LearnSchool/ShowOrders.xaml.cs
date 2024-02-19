@@ -45,7 +45,7 @@ namespace LearnSchool
                 }
                 else if (item.DateDiffMinute < 59)
                 {
-                   // MessageBox.Show("0 часов " + (time - ((time / 60) * 60)) + " минут").ToString();
+                   
                     item.DateDiffHour = 0;
                     item.DateDiffMinute = time - ((time / 60) * 60);
                 }
