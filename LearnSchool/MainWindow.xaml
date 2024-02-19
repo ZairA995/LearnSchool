@@ -1,0 +1,136 @@
+﻿<Window x:Class="LearnSchool.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LearnSchool"
+        mc:Ignorable="d"
+        Title="Школа языков 'Леарн'. Главная" ResizeMode="NoResize" WindowState="Maximized">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!--шапка-->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Image Source="school_logo.png" Margin="10"/>
+            <TextBlock Grid.Column="1" Text="Школа языков 'Леарн'" FontWeight="Bold" Style="{StaticResource textStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5"/>
+            <TextBlock Grid.Column="2" Text="klient" Name="role" Visibility="Hidden"/>
+            <Button x:Name="log_in" Grid.Column="3" Content="Войти" HorizontalAlignment="Right" Margin="0 0 10 0"  Template="{StaticResource buttonLoginTempl}" Click="log_in_Click"/>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="450"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            
+            <!--отображение курсов-->
+            <ListBox x:Name="catalog" Grid.Column="0" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderThickness="0" ScrollViewer.VerticalScrollBarVisibility ="Hidden">
+                <ListBox.ItemContainerStyle>
+                    <Style>
+                        <Setter Property="ListBoxItem.Background" Value="White"/>
+                        <Setter Property="ListBoxItem.Margin" Value="5"/>
+                        <Setter Property="ListBoxItem.Padding" Value="5"/>
+                        <!--<Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsDiscounted}" Value="true">
+                                <Setter Property="ListBoxItem.Background" Value ="#e7fabf"/>
+                            </DataTrigger>
+                        </Style.Triggers>-->
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border x:Name="bor" Style="{StaticResource bor}" CornerRadius="100 0 0 100" BorderBrush="Gray" BorderThickness="0.4" Tag="{Binding Path=Title}" MouseDown="bor_MouseDown">
+                            <Grid HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition Height="70"/>
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" CornerRadius="100">
+                                    <Border.Background>
+                                        <ImageBrush ImageSource="{Binding Path=MainImagePath}" Stretch="Fill"/>
+                                    </Border.Background>
+                                </Border>
+                   
+                                <TextBlock Style="{StaticResource textStyle}" Text="{Binding Path=Title}" Margin="30 0 0 0" VerticalAlignment="Center" Grid.Column="1" Grid.Row="0"/>
+                                <StackPanel Orientation="Horizontal"  Grid.Column="1" Grid.Row="1" Margin="30 0 0 0" HorizontalAlignment="Left">
+                                    <TextBlock Style="{StaticResource oldCostStyle}" TextDecorations="Strikethrough" Text="{Binding Path=Cost}"/>
+                                    <TextBlock Style="{StaticResource oldCostStyle}" Text=" "/>
+                                    <TextBlock Style="{StaticResource textStyle}" Text="{Binding Path=CostNew}"/>
+                                    <TextBlock Style="{StaticResource textStyle}" Text=" рублей за "/>
+                                    <TextBlock Style="{StaticResource textStyle}" Text="{Binding Path=DurationInSeconds}"/>
+                                    <TextBlock Style="{StaticResource textStyle}" Text=" минут"/>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal"  Grid.Column="1" Grid.Row="2" Margin="30 0 0 0" HorizontalAlignment="Left">
+                                    <TextBlock Style="{StaticResource oldCostStyle}" Text="*скидка "/>
+                                    <TextBlock Style="{StaticResource oldCostStyle}" Text="{Binding Path=Discount}"/>
+                                    <TextBlock Style="{StaticResource oldCostStyle}" Text="%"/>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="3" Margin="30 0 0 5" HorizontalAlignment="Left">
+                                    <Button x:Name="update_courseBut" Content="Редактировать" Template="{StaticResource buttonTempl}" Tag="{Binding}" Click="update_courseBut_Click"/>
+                                    <Button x:Name="delete_courseBut" Content="Удалить" Template="{StaticResource buttonTempl}" Tag="{Binding Path=Title}" Click="delete_courseBut_Click"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical" IsItemsHost="True"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+
+            <!--панель с фильтрами-->
+            <StackPanel Grid.Column="1" Margin="10 10 10 0">
+                <TextBlock Style="{StaticResource textStyle}" Margin="0 5 0 0" VerticalAlignment="Center" Text="Поиск по названию или описанию:"/>
+                <TextBox x:Name="search" Style="{StaticResource textStyle}" TextChanged="search_TextChanged"/>
+                <TextBlock Style="{StaticResource textStyle}" Margin="0 5 0 0" VerticalAlignment="Center" Text="Сортировка услуг по стоимости:"/>
+                <ComboBox Name="sort" Style="{StaticResource oldCostStyle}" SelectionChanged="sort_SelectionChanged">
+                    <ComboBoxItem Content="По возрастанию"/>
+                    <ComboBoxItem Content="По убыванию"/>
+                </ComboBox>
+                <TextBlock Style="{StaticResource textStyle}" Margin="0 5 0 0" VerticalAlignment="Center" Text="Фильтрация по размеру скидки:"/>
+                <ComboBox Name="filtered" Style="{StaticResource oldCostStyle}" SelectionChanged="filtered_SelectionChanged">
+                    <ComboBoxItem Content="0-5%"/>
+                    <ComboBoxItem Content="5-15%"/>
+                    <ComboBoxItem Content="15-30%"/>
+                    <ComboBoxItem Content="30-70%"/>
+                    <ComboBoxItem Content="70-100%"/>
+                    <ComboBoxItem Content="Все"/>
+                </ComboBox>
+                <Button x:Name="add_courseBut" Content="Добавить курс" Click="add_courseBut_Click"  HorizontalAlignment="Right" Margin="0 15 0 0" Template="{StaticResource buttonTempl}"/>
+                <Button x:Name="show_orderBut" Content="Ближайшие записи" Click="show_orderBut_Click"  HorizontalAlignment="Right" Margin="0 15 0 0" Template="{StaticResource buttonTempl}"/>
+            </StackPanel>
+
+            <!--нижняя панель с количеством записей-->
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
+                <TextBlock x:Name="current_rows" Style="{StaticResource textStyle}"/>
+                <TextBlock Style="{StaticResource textStyle}" Text=" записей из "/>
+                <TextBlock x:Name="total_rows" Style="{StaticResource textStyle}"/>
+            </StackPanel>
+            
+        </Grid>
+        
+    </Grid>
+</Window>

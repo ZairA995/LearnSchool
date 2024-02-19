@@ -1,0 +1,54 @@
+﻿<Window x:Class="LearnSchool.NewOrderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:LearnSchool"
+        mc:Ignorable="d"
+        Title="Школа языков 'Леарн'. Запись на курс" Height="450" Width="1100" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Image Source="school_logo.png" Margin="10"/>
+            <TextBlock Grid.Column="1" Text="Школа языков 'Леарн'" FontWeight="Bold" Style="{StaticResource textStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5"/>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="10 0 15 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Style="{StaticResource oldCostStyle}" Text="Название курса"/>
+            <TextBlock Grid.Row="1" Style="{StaticResource oldCostStyle}" Text="Длительность (в мин.)"/>
+            <TextBlock Grid.Row="2" Style="{StaticResource oldCostStyle}" Text="ФИО клиента"/>
+            <TextBlock Grid.Row="3" Style="{StaticResource oldCostStyle}" Text="Дата"/>
+            <TextBlock Grid.Row="4" Style="{StaticResource oldCostStyle}" Text="Время"/>
+
+            <TextBox Grid.Row="0" IsReadOnly="True" Grid.Column="1" Height="auto" MaxLines="3" TextWrapping="WrapWithOverflow"   x:Name="titleText" Style="{StaticResource textStyle}"/>
+            <TextBox Grid.Row="1" IsReadOnly="True" Grid.Column="1" x:Name="durationText" Style="{StaticResource textStyle}"/>
+            <ComboBox Grid.Row="2" Grid.Column="1" BorderThickness="0 0 0 2" x:Name="FIOText" Style="{StaticResource textStyle}"/>
+            <DatePicker Grid.Row="3" Grid.Column="1" Name="dateText" Style="{StaticResource textStyle}"/>
+            <TextBox Grid.Row="4" Grid.Column="1" x:Name="timeText" MaxLength="5" Text="{Binding Source={x:Static sys:DateTime.Now},StringFormat ='HH:mm',Mode=OneWay}" Style="{StaticResource textStyle}"  PreviewTextInput="timeText_PreviewTextInput" LostFocus="timeText_LostFocus"/>
+            
+            <Button IsDefault="True" x:Name="saveBut" Click="saveBut_Click"  Grid.Row="6" Grid.Column="1" Margin="0 5 0 0"  Content="Сохранить" Template="{StaticResource buttonTempl}"/>
+        </Grid>
+    </Grid>
+</Window>
